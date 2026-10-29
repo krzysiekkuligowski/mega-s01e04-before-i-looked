@@ -56,5 +56,17 @@ export function createApp(config: RigConfig = loadConfig()) {
     }
   });
 
+  app.get('/api/digest/:night', (c) => {
+    const night = c.req.param('night');
+    if (!NIGHT.test(night)) return c.json({ error: 'digest not found' }, 404);
+
+    try {
+      return c.json(readNight(config.runsDir, night).rows);
+    } catch (error) {
+      if (!missingRunLog(error)) throw error;
+      return c.json({ error: 'digest not found' }, 404);
+    }
+  });
+
   return app;
 }
