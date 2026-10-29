@@ -6,6 +6,7 @@ describe('readNight', () => {
     const digest = readNight('runs', '2026-10-28');
 
     expect(digest.invalidLines).toBe(1);
+    expect(digest.statusCounts).toEqual({ ok: 10, retry: 4, fail: 1 });
     expect(digest.rows.map((row) => row.job)).toEqual([
       'digest/render',
       'fixtures/refresh',
